@@ -1,3 +1,120 @@
+--// YUNIUM LOADING SCREEN
+
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+local loadingGui = Instance.new("ScreenGui")
+loadingGui.Name = "YuniumLoading"
+loadingGui.IgnoreGuiInset = true
+loadingGui.ResetOnSpawn = false
+loadingGui.DisplayOrder = 999
+loadingGui.Parent = playerGui
+
+local background = Instance.new("Frame")
+background.Size = UDim2.fromScale(1, 1)
+background.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+background.BorderSizePixel = 0
+background.Parent = loadingGui
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0, 60)
+title.Position = UDim2.new(0, 0, 0.38, 0)
+title.BackgroundTransparency = 1
+title.Text = "YUNIUM"
+title.TextColor3 = Color3.fromRGB(255, 90, 170)
+title.TextSize = 38
+title.Font = Enum.Font.GothamBold
+title.Parent = background
+
+local status = Instance.new("TextLabel")
+status.Size = UDim2.new(1, 0, 0, 25)
+status.Position = UDim2.new(0, 0, 0.48, 0)
+status.BackgroundTransparency = 1
+status.Text = "Loading..."
+status.TextColor3 = Color3.fromRGB(200, 200, 210)
+status.TextSize = 14
+status.Font = Enum.Font.Gotham
+status.Parent = background
+
+local barBackground = Instance.new("Frame")
+barBackground.Size = UDim2.new(0, 280, 0, 6)
+barBackground.Position = UDim2.new(0.5, -140, 0.56, 0)
+barBackground.BackgroundColor3 = Color3.fromRGB(40, 40, 48)
+barBackground.BorderSizePixel = 0
+barBackground.Parent = background
+
+Instance.new("UICorner", barBackground).CornerRadius =
+    UDim.new(1, 0)
+
+local bar = Instance.new("Frame")
+bar.Size = UDim2.new(0, 0, 1, 0)
+bar.BackgroundColor3 = Color3.fromRGB(255, 90, 170)
+bar.BorderSizePixel = 0
+bar.Parent = barBackground
+
+Instance.new("UICorner", bar).CornerRadius =
+    UDim.new(1, 0)
+
+local percent = Instance.new("TextLabel")
+percent.Size = UDim2.new(1, 0, 0, 22)
+percent.Position = UDim2.new(0, 0, 0.58, 0)
+percent.BackgroundTransparency = 1
+percent.Text = "0%"
+percent.TextColor3 = Color3.fromRGB(220, 220, 230)
+percent.TextSize = 12
+percent.Font = Enum.Font.Gotham
+percent.Parent = background
+
+for i = 0, 100 do
+    bar.Size = UDim2.new(i / 100, 0, 1, 0)
+    percent.Text = i .. "%"
+    task.wait(0.025)
+end
+
+status.Text = "Ready!"
+
+task.wait(0.25)
+
+local fade = TweenService:Create(
+    background,
+    TweenInfo.new(0.4),
+    {BackgroundTransparency = 1}
+)
+
+local fadeInfo = TweenInfo.new(0.4)
+
+for _, object in ipairs(loadingGui:GetDescendants()) do
+    local properties = {}
+
+    if object:IsA("TextLabel") or object:IsA("TextButton") then
+        properties.TextTransparency = 1
+        properties.BackgroundTransparency = 1
+    elseif object:IsA("Frame") then
+        properties.BackgroundTransparency = 1
+    elseif object:IsA("UIStroke") then
+        properties.Transparency = 1
+    end
+
+    if next(properties) then
+        TweenService:Create(object, fadeInfo, properties):Play()
+    end
+end
+
+local fade = TweenService:Create(
+    background,
+    fadeInfo,
+    {BackgroundTransparency = 1}
+)
+
+fade:Play()
+fade.Completed:Wait()
+
+loadingGui:Destroy()
+
+--// SUA INTERFACE PRINCIPAL COMEÇA ABAIXO
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
