@@ -113,8 +113,8 @@ fade:Play()
 fade.Completed:Wait()
 
 loadingGui:Destroy()
-
---// SUA INTERFACE PRINCIPAL COMEÇA ABAIXO
+--------------------------
+--script 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -633,7 +633,7 @@ local function showTab(name)
                 end
             end
         end)
-        sliderRow("Hitbox Size", 0, 10, hitboxSize, function(val)
+        sliderRow("Hitbox Size", 0, 40, hitboxSize, function(val)
             hitboxSize = val
         end)
         heading("Movement & Combos")
